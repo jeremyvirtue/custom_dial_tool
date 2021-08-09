@@ -1,9 +1,0 @@
-{
-  "files.associations": {
-    "*.tcc": "cpp",
-    "fstream": "cpp",
-    "iosfwd": "cpp",
-    "custom_dial_head.h": "c",
-    "cjson.h": "c"
-  }
-}
