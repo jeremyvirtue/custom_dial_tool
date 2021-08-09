@@ -4,7 +4,7 @@
  * @Author: Jeremy
  * @Date: 2021-08-09 14:23:55
  * @LastEditors: Jeremy
- * @LastEditTime: 2021-08-09 19:39:40
+ * @LastEditTime: 2021-08-10 00:00:33
  */
 /*
  * @LastEditTime: 2021-08-09 13:40:08
@@ -378,6 +378,49 @@ int main()
   {
       printf("student:error\n");
   }
+
+  char read_json[65535] = {0};
+  char *ch;
+  ch = read_json;
+  FILE *re = NULL; 
+  re = fopen("dial_image_example.txt","r");
+  *ch=fgetc(re);
+  int num = 0;
+  while( *ch != '}'){
+      ch++;
+      *ch=fgetc(re); 
+      num++;
+  }
+  printf("\nnum = %d\n",num);
+  printf("%s\n\n",read_json);
+  fclose(re);
+
+
+  cJSON* cjson_mytest = NULL;
+  cJSON* cjson_names = NULL;
+  cJSON* cjson_num = NULL; 
+  cJSON* cjson_sites = NULL; 
+  cJSON* cjson_sites_item = NULL; 
+
+
+  cjson_mytest = cJSON_Parse(read_json);
+  if(cjson_mytest == NULL)
+  {
+      printf("parse fail.\n"); 
+  }
+  cjson_names = cJSON_GetObjectItem(cjson_mytest, "name");
+  cjson_num = cJSON_GetObjectItem(cjson_mytest, "num");
+  cjson_sites = cJSON_GetObjectItem(cjson_mytest, "sites");
+  skill_array_size = cJSON_GetArraySize(cjson_sites);
+  for(i = 0; i < skill_array_size; i++)
+  {
+      cjson_sites_item = cJSON_GetArrayItem(cjson_sites, i);
+      printf("%s ,", cjson_sites_item->valuestring);
+  }
+
+
+  printf("\nname = %s\n",cjson_names->valuestring);
+  printf("num  = %d\n",cjson_num->valueint); 
     
 
 
@@ -387,7 +430,7 @@ int main()
 
 
   main10_data_init();
-  printf("hello world\n");
+  printf("\nhello world\n");
 
   FILE *fp = NULL; 
   // fp = fopen("head_bin4.bin", "w+");
