@@ -61,13 +61,13 @@ typedef struct _custom_dial_chart_bar custom_dial_chart_bar;
 struct _custom_dial_text
 {
 	uint8_t  type;
-	uint8_t  data_type;  //数据类型
-	uint16_t x;          //左上角x坐标
-	uint16_t y;          //左上角y坐标
-	uint8_t  text_width; //文本宽度
-	uint8_t  text_rgb[3];//字体RGB
-	uint8_t  text_align; //对齐方式
-	uint8_t  text_size;  //字体大小
+	uint8_t  data_type;      //数据类型
+	uint16_t x;              //左上角x坐标
+	uint16_t y;              //左上角y坐标
+	uint8_t  text_width;     //文本宽度
+	uint8_t  text_rgb[3];    //字体RGB
+	uint8_t  text_align;     //对齐方式
+	uint8_t  text_size;      //字体大小
 	uint8_t  text_custom[20];//自定义文本
 };
 typedef struct _custom_dial_text custom_dial_text;

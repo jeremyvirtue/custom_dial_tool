@@ -4,7 +4,7 @@
  * @Author: Jeremy
  * @Date: 2021-08-09 14:23:55
  * @LastEditors: Jeremy
- * @LastEditTime: 2021-08-10 00:00:33
+ * @LastEditTime: 2021-08-10 18:09:52
  */
 /*
  * @LastEditTime: 2021-08-09 13:40:08
@@ -16,412 +16,348 @@
 #include "cJSON/cJSON.h"
 
 uint8_t dial_data[4096];
-uint8_t obj[40]; 
+uint8_t obj_type[40]; 
 #define LV_HOR_RES_MAX 320
 #define LV_VER_RES_MAX 320
 
+uint8_t get_dial_type_size(uint8_t type)
+{
+	if(type == dial_type_image)						return sizeof(custom_dial_image);
+	else if(type == dial_type_pointer) 		return sizeof(custom_dial_pointer);
+	else if(type == dial_type_arc_bar) 		return sizeof(custom_dial_arc_bar);
+	else if(type == dial_type_chart_bar)  return sizeof(custom_dial_chart_bar);
+	else if(type == dial_type_text)			  return sizeof(custom_dial_text);
+	else if(type == dial_type_more_img) 	return sizeof(custom_dial_more_img);
+	else return 0;
+}
 
-custom_dial_image     main10_watch_bg =  {//背景
+
+const custom_dial_more_img main9_watch_bg = {
   .type= dial_type_image,
   .x= 0,//左上角x坐标
   .y= 0,//左上角y坐标
-  .img_addr= main_61_bg_320x320_png,//图片nandflash相对地址
+  .img_addr[0] = main_30_001_320x320_png ,//图片nandflash相对地址
+  .img_addr[1] = main_30_002_320x320_png ,//图片nandflash相对地址
+  .img_addr[2] = main_30_003_320x320_png ,//图片nandflash相对地址
+  .img_addr[3] = main_30_004_320x320_png ,//图片nandflash相对地址
+  .img_addr[4] = main_30_005_320x320_png ,//图片nandflash相对地址
+  .img_addr[5] = main_30_006_320x320_png ,//图片nandflash相对地址
+  .img_addr[6] = main_30_007_320x320_png ,//图片nandflash相对地址
+  .img_addr[7] = main_30_008_320x320_png ,//图片nandflash相对地址
+  .img_addr[8] = main_30_009_320x320_png ,//图片nandflash相对地址
+  .img_addr[9] = main_30_010_320x320_png ,//图片nandflash相对地址
+  .img_addr[10]= main_30_011_320x320_png ,//图片nandflash相对地址
+  .img_addr[11]= main_30_012_320x320_png ,//图片nandflash相对地址
+  .img_addr[12]= main_30_013_320x320_png ,//图片nandflash相对地址
+  .img_addr[13]= main_30_014_320x320_png ,//图片nandflash相对地址
+  .img_addr[14]= main_30_015_320x320_png ,//图片nandflash相对地址
+  .img_addr[15]= main_30_016_320x320_png ,//图片nandflash相对地址  
+  .data_type = dial_data_img_gif,
 };
-custom_dial_text      main10_watch_month = {//文本 月
+const custom_dial_text 		 main9_watch_hour_high = {
   .type = dial_type_text,
-  .data_type = dial_data_text_month  ,
-  .x =  125 ,
-  .y =  16,        
+  .data_type = dial_data_text_hour_high  ,
+  .x =  82 ,
+  .y =  22,        
   .text_width = 35,
   .text_rgb[0] = 0xff,
   .text_rgb[1] = 0xff,
   .text_rgb[2] = 0xff,
   .text_align = LV_LABEL_ALIGN_LEFT,
-  .text_size = dial_data_16x16_ext, 
+  .text_size = dial_data_60x60_ext,
 };
-custom_dial_text      main10_watch_date = {//文本 日
+const custom_dial_text 		 main9_watch_hour_low = {
   .type = dial_type_text,
-  .data_type = dial_data_text_day  ,
-  .x =  151 ,
-  .y =  16,        
+  .data_type = dial_data_text_hour_low  ,
+  .x =  117 ,
+  .y =  22,        
   .text_width = 35,
   .text_rgb[0] = 0xff,
   .text_rgb[1] = 0xff,
   .text_rgb[2] = 0xff,
   .text_align = LV_LABEL_ALIGN_LEFT,
-  .text_size = dial_data_16x16_ext, 
+  .text_size = dial_data_60x60_ext,
 };
-custom_dial_text      main10_watch_separator = {//文本 日月的斜杠
+const custom_dial_text 		 main9_watch_min_high = {
+  .type = dial_type_text,
+  .data_type = dial_data_text_min_high  ,
+  .x =  169 ,
+  .y =  22,        
+  .text_width = 35,
+  .text_rgb[0] = 0xff,
+  .text_rgb[1] = 0xff,
+  .text_rgb[2] = 0xff,
+  .text_align = LV_LABEL_ALIGN_LEFT,
+  .text_size = dial_data_60x60_ext,
+};
+const custom_dial_text 		 main9_watch_min_low = {
+  .type = dial_type_text,
+  .data_type = dial_data_text_min_low  ,
+  .x =  204 ,
+  .y =  22,        
+  .text_width = 35,
+  .text_rgb[0] = 0xff,
+  .text_rgb[1] = 0xff,
+  .text_rgb[2] = 0xff,
+  .text_align = LV_LABEL_ALIGN_LEFT,
+  .text_size = dial_data_60x60_ext,
+};
+const custom_dial_text 		 main9_watch_separator = {
   .type = dial_type_text,
   .data_type = dial_data_text_custom  ,
-  .x =  143  ,
-  .y =  16,        
+  .x =  152 ,
+  .y =  22,        
   .text_width = 35,
   .text_rgb[0] = 0xff,
   .text_rgb[1] = 0xff,
   .text_rgb[2] = 0xff,
   .text_align = LV_LABEL_ALIGN_LEFT,
-  .text_size = dial_data_16x16_ext,
+  .text_size = dial_data_60x60_ext,
+  .text_custom[0] = ':',
+  .text_custom[1] = '\n',
+};
+const custom_dial_text 		 main9_watch_month = {
+  .type = dial_type_text,
+  .data_type = dial_data_text_month  ,
+  .x =  119 ,
+  .y =  268,        
+  .text_width = 35,
+  .text_rgb[0] = 0xff,
+  .text_rgb[1] = 0xff,
+  .text_rgb[2] = 0xff,
+  .text_align = LV_LABEL_ALIGN_LEFT,
+  .text_size = dial_data_30x30_ext, 
+};
+const custom_dial_text 		 main9_watch_date = {
+  .type = dial_type_text,
+  .data_type = dial_data_text_day  ,
+  .x =  164 ,
+  .y =  268,        
+  .text_width = 35,
+  .text_rgb[0] = 0xff,
+  .text_rgb[1] = 0xff,
+  .text_rgb[2] = 0xff,
+  .text_align = LV_LABEL_ALIGN_LEFT,
+  .text_size = dial_data_30x30_ext, 
+};
+const custom_dial_text 		 main9_watch_separator2 = {
+  .type = dial_type_text,
+  .data_type = dial_data_text_custom  ,
+  .x =  154  ,
+  .y =  268,        
+  .text_width = 35,
+  .text_rgb[0] = 0xff,
+  .text_rgb[1] = 0xff,
+  .text_rgb[2] = 0xff,
+  .text_align = LV_LABEL_ALIGN_LEFT,
+  .text_size = dial_data_30x30_ext,
   .text_custom[0] = '/',
   .text_custom[1] = '\n',
 };
-custom_dial_text      main10_watch_week = {//文本 星期
-  .type = dial_type_text,
-  .data_type = dial_data_text_week  ,
-  .x =  174  ,
-  .y =  16,        
-  .text_width = 50,
-  .text_rgb[0] = 0xff,
-  .text_rgb[1] = 0xff,
-  .text_rgb[2] = 0xff,
-  .text_align = LV_LABEL_ALIGN_LEFT,
-  .text_size = dial_data_16x16_ext,
-};
-custom_dial_text      main10_watch_power = {//文本 电池电量
-  .type = dial_type_text,
-  .data_type = dial_data_text_power  ,
-  .x =  34,
-  .y =  16,        
-  .text_width = 35,
-  .text_rgb[0] = 0xff,
-  .text_rgb[1] = 0xff,
-  .text_rgb[2] = 0xff,
-  .text_align = LV_LABEL_ALIGN_CENTER,
-  .text_size = dial_data_16x16_ext,
-};
-custom_dial_more_img  main10_watch_hour_high = {//多图 时
-  .type= dial_type_more_img,
-  .x= 28,//左上角x坐标
-  .y= 48,//左上角y坐标
-  .img_addr[0]= main_61_num_0_58x88_png,//图片nandflash相对地址
-  .img_addr[1]= main_61_num_1_58x88_png,//图片nandflash相对地址
-  .img_addr[2]= main_61_num_2_58x88_png,//图片nandflash相对地址
-  .img_addr[3]= main_61_num_3_58x88_png,//图片nandflash相对地址
-  .img_addr[4]= main_61_num_4_58x88_png,//图片nandflash相对地址
-  .img_addr[5]= main_61_num_5_58x88_png,//图片nandflash相对地址
-  .img_addr[6]= main_61_num_6_58x88_png,//图片nandflash相对地址
-  .img_addr[7]= main_61_num_7_58x88_png,//图片nandflash相对地址
-  .img_addr[8]= main_61_num_8_58x88_png,//图片nandflash相对地址
-  .img_addr[9]= main_61_num_9_58x88_png,//图片nandflash相对地址
-  .data_type = dial_data_hour_high,
-};
-custom_dial_more_img  main10_watch_hour_low = {//多图 时
-  .type= dial_type_more_img,
-  .x= 90,//左上角x坐标
-  .y= 48,//左上角y坐标
-  .img_addr[0]= main_61_num_0_58x88_png,//图片nandflash相对地址
-  .img_addr[1]= main_61_num_1_58x88_png,//图片nandflash相对地址
-  .img_addr[2]= main_61_num_2_58x88_png,//图片nandflash相对地址
-  .img_addr[3]= main_61_num_3_58x88_png,//图片nandflash相对地址
-  .img_addr[4]= main_61_num_4_58x88_png,//图片nandflash相对地址
-  .img_addr[5]= main_61_num_5_58x88_png,//图片nandflash相对地址
-  .img_addr[6]= main_61_num_6_58x88_png,//图片nandflash相对地址
-  .img_addr[7]= main_61_num_7_58x88_png,//图片nandflash相对地址
-  .img_addr[8]= main_61_num_8_58x88_png,//图片nandflash相对地址
-  .img_addr[9]= main_61_num_9_58x88_png,//图片nandflash相对地址
-  .data_type = dial_data_hour_low,
-};
-custom_dial_more_img  main10_watch_min_high = {//多图 分
-  .type= dial_type_more_img,
-  .x= 172,//左上角x坐标
-  .y= 48,//左上角y坐标
-  .img_addr[0]= main_61_num_0_58x88_png,//图片nandflash相对地址
-  .img_addr[1]= main_61_num_1_58x88_png,//图片nandflash相对地址
-  .img_addr[2]= main_61_num_2_58x88_png,//图片nandflash相对地址
-  .img_addr[3]= main_61_num_3_58x88_png,//图片nandflash相对地址
-  .img_addr[4]= main_61_num_4_58x88_png,//图片nandflash相对地址
-  .img_addr[5]= main_61_num_5_58x88_png,//图片nandflash相对地址
-  .img_addr[6]= main_61_num_6_58x88_png,//图片nandflash相对地址
-  .img_addr[7]= main_61_num_7_58x88_png,//图片nandflash相对地址
-  .img_addr[8]= main_61_num_8_58x88_png,//图片nandflash相对地址
-  .img_addr[9]= main_61_num_9_58x88_png,//图片nandflash相对地址
-  .data_type = dial_data_min_high,
-};
-custom_dial_more_img  main10_watch_min_low = {//多图 分
-  .type= dial_type_more_img,
-  .x= 234,//左上角x坐标
-  .y= 48,//左上角y坐标
-  .img_addr[0]= main_61_num_0_58x88_png,//图片nandflash相对地址
-  .img_addr[1]= main_61_num_1_58x88_png,//图片nandflash相对地址
-  .img_addr[2]= main_61_num_2_58x88_png,//图片nandflash相对地址
-  .img_addr[3]= main_61_num_3_58x88_png,//图片nandflash相对地址
-  .img_addr[4]= main_61_num_4_58x88_png,//图片nandflash相对地址
-  .img_addr[5]= main_61_num_5_58x88_png,//图片nandflash相对地址
-  .img_addr[6]= main_61_num_6_58x88_png,//图片nandflash相对地址
-  .img_addr[7]= main_61_num_7_58x88_png,//图片nandflash相对地址
-  .img_addr[8]= main_61_num_8_58x88_png,//图片nandflash相对地址
-  .img_addr[9]= main_61_num_9_58x88_png,//图片nandflash相对地址
-  .data_type = dial_data_min_low,
-};
-custom_dial_image     main10_watch_maohao =  {//单图 冒号
-  .type= dial_type_image,
-  .x= 152,//左上角x坐标
-  .y= 67,//左上角y坐标
-  .img_addr= main_61_volon_png,//图片nandflash相对地址
-};
-custom_dial_more_img  main10_watch_weather_icon = {//多图 天气
-  .type= dial_type_image,
-  .x= 247,//左上角x坐标
-  .y= 16,//左上角y坐标
-  .img_addr[0] = main_61_weather_Clear_16x16_png         ,//图片nandflash相对地址
-  .img_addr[1] = main_61_weather_cloudy_16x16_png        ,//图片nandflash相对地址
-  .img_addr[2] = main_61_weather_gloomy_16x16_png      ,//图片nandflash相对地址
-  .img_addr[3] = main_61_weather_Drizzle_16x16_png       ,//图片nandflash相对地址
-  .img_addr[4] = main_61_weather_moderate_rain_16x16_png  ,//图片nandflash相对地址
-  .img_addr[5] = main_61_weather_thunderstorm_16x16_png  ,//图片nandflash相对地址
-  .img_addr[6] = main_61_weather_heavy_rain_16x16_png  ,//图片nandflash相对地址
-  .img_addr[7] = main_61_weather_sleet_16x16_png ,//图片nandflash相对地址
-  .img_addr[8] = main_61_weather_light_snow_16x16_png  ,//图片nandflash相对地址
-  .img_addr[9] = main_61_weather_moderate_snow_16x16_png        ,//图片nandflash相对地址
-  .img_addr[10]= main_61_weather_heavy_snow_16x16_png ,//图片nandflash相对地址 
-  .data_type = dial_data_img_weather,
-};
-custom_dial_text      main10_watch_text_icon = {//文本 天气
-  .type = dial_type_text,
-  .data_type = dial_data_text_now_tem  ,
-  .x =  269  ,
-  .y =  16,        
-  .text_width = 35,
-  .text_rgb[0] = 0xff,
-  .text_rgb[1] = 0xff,
-  .text_rgb[2] = 0xff,
-  .text_align = LV_LABEL_ALIGN_CENTER,
-  .text_size = dial_data_16x16_ext,
-};
-custom_dial_text      main10_watch_text_heart = {//文本 心率
-  .type = dial_type_text,
-  .data_type = dial_data_text_heart  ,
-  .x =  103  ,
-  .y =  270,        
-  .text_width = 42,
-  .text_rgb[0] = 0xff,
-  .text_rgb[1] = 0xff,
-  .text_rgb[2] = 0xff,
-  .text_align = LV_LABEL_ALIGN_CENTER,
-  .text_size = dial_data_24x24_ext,
-};
-custom_dial_text      main10_watch_text_step = {//文本 步数
-  .type = dial_type_text,
-  .data_type = dial_data_text_step  ,
-  .x =  249  ,
-  .y =  207,        
-  .text_width = 55,
-  .text_rgb[0] = 0xff,
-  .text_rgb[1] = 0xff,
-  .text_rgb[2] = 0xff,
-  .text_align = LV_LABEL_ALIGN_CENTER,
-  .text_size = dial_data_16x16_ext,
-};
-custom_dial_text      main10_watch_text_kal = {//文本 卡路里
-  .type = dial_type_text,
-  .data_type = dial_data_text_kal  ,
-  .x =  249  ,
-  .y =  288,        
-  .text_width = 55,
-  .text_rgb[0] = 0xff,
-  .text_rgb[1] = 0xff,
-  .text_rgb[2] = 0xff,
-  .text_align = LV_LABEL_ALIGN_CENTER,
-  .text_size = dial_data_16x16_ext,
-};
 
-
-uint8_t get_dial_type_size(uint8_t type)
+void main9_data_init(void)
 {
-    if (type == dial_type_image)	      	 return sizeof(custom_dial_image);
-    else if (type == dial_type_pointer) 	 return sizeof(custom_dial_pointer);
-    else if (type == dial_type_arc_bar) 	 return sizeof(custom_dial_arc_bar);
-    else if (type == dial_type_chart_bar)    return sizeof(custom_dial_chart_bar);
-    else if (type == dial_type_text)	     return sizeof(custom_dial_text);
-    else if (type == dial_type_more_img) 	 return sizeof(custom_dial_more_img);
-    else return 0;
-}
-
-
- void main10_data_init(void)
-{ 
 	uint8_t* memory = dial_data; 
-	obj[0] = dial_type_image;
-	obj[1] = dial_type_more_img;
-	obj[2] = dial_type_more_img;
-	obj[3] = dial_type_more_img;
-	obj[4] = dial_type_more_img; 
-	obj[5] = dial_type_image; 
-	obj[6] = dial_type_text; 
-	obj[7] = dial_type_text; 
-	obj[8] = dial_type_text; 
-	obj[9] = dial_type_text; 
-	obj[10] = dial_type_text; 
-	obj[11] = dial_type_text; 
-	obj[12] = dial_type_text; 
-	obj[13] = dial_type_text; 
-	obj[14] = dial_type_text; 
-	obj[15] = dial_type_more_img; 
+	obj_type[0] = dial_type_more_img;
+	obj_type[1] = dial_type_text;
+	obj_type[2] = dial_type_text;
+	obj_type[3] = dial_type_text;
+	obj_type[4] = dial_type_text;
+	obj_type[5] = dial_type_text;
+  obj_type[6] = dial_type_text;
+	obj_type[7] = dial_type_text;
+	obj_type[8] = dial_type_text;
 
-	
-	memcpy(memory,&main10_watch_bg,get_dial_type_size(dial_type_image)); 
-	memory += get_dial_type_size(dial_type_image);
-
-	memcpy(memory,&main10_watch_hour_high,get_dial_type_size(dial_type_more_img)); 
+	memcpy(memory,&main9_watch_bg,get_dial_type_size(dial_type_more_img)); 
 	memory += get_dial_type_size(dial_type_more_img);
 
-	memcpy(memory,&main10_watch_hour_low,get_dial_type_size(dial_type_more_img)); 
-	memory += get_dial_type_size(dial_type_more_img);
+	memcpy(memory,&main9_watch_hour_high,get_dial_type_size(dial_type_text)); 
+	memory += get_dial_type_size(dial_type_text);
 
-	memcpy(memory,&main10_watch_min_high,get_dial_type_size(dial_type_more_img)); 
-	memory += get_dial_type_size(dial_type_more_img); 
+  memcpy(memory,&main9_watch_hour_low,get_dial_type_size(dial_type_text)); 
+	memory += get_dial_type_size(dial_type_text);
 
-	memcpy(memory,&main10_watch_min_low,get_dial_type_size(dial_type_more_img)); 
-	memory += get_dial_type_size(dial_type_more_img); 
+  memcpy(memory,&main9_watch_min_high,get_dial_type_size(dial_type_text)); 
+	memory += get_dial_type_size(dial_type_text);
 
-  memcpy(memory,&main10_watch_maohao,get_dial_type_size(dial_type_image)); 
-	memory += get_dial_type_size(dial_type_image); 
+  memcpy(memory,&main9_watch_min_low,get_dial_type_size(dial_type_text)); 
+	memory += get_dial_type_size(dial_type_text);
 
-  memcpy(memory,&main10_watch_month,get_dial_type_size(dial_type_text)); 
-	memory += get_dial_type_size(dial_type_text); 
-  memcpy(memory,&main10_watch_date,get_dial_type_size(dial_type_text)); 
-	memory += get_dial_type_size(dial_type_text); 
-  memcpy(memory,&main10_watch_separator,get_dial_type_size(dial_type_text)); 
-	memory += get_dial_type_size(dial_type_text); 
+  memcpy(memory,&main9_watch_separator,get_dial_type_size(dial_type_text)); 
+	memory += get_dial_type_size(dial_type_text);
 
-  memcpy(memory,&main10_watch_text_icon,get_dial_type_size(dial_type_text)); 
-	memory += get_dial_type_size(dial_type_text); 
-  memcpy(memory,&main10_watch_text_heart,get_dial_type_size(dial_type_text)); 
-	memory += get_dial_type_size(dial_type_text); 
-  memcpy(memory,&main10_watch_text_step,get_dial_type_size(dial_type_text)); 
-	memory += get_dial_type_size(dial_type_text); 
-  memcpy(memory,&main10_watch_text_kal,get_dial_type_size(dial_type_text)); 
-	memory += get_dial_type_size(dial_type_text); 
+  memcpy(memory,&main9_watch_month,get_dial_type_size(dial_type_text)); 
+	memory += get_dial_type_size(dial_type_text);
 
-  memcpy(memory,&main10_watch_week,get_dial_type_size(dial_type_text)); 
-	memory += get_dial_type_size(dial_type_text); 
-  memcpy(memory,&main10_watch_power,get_dial_type_size(dial_type_text)); 
-	memory += get_dial_type_size(dial_type_text); 
-  
-  memcpy(memory,&main10_watch_weather_icon,get_dial_type_size(dial_type_more_img)); 
-	memory += get_dial_type_size(dial_type_more_img); 
+  memcpy(memory,&main9_watch_date,get_dial_type_size(dial_type_text)); 
+	memory += get_dial_type_size(dial_type_text);
+
+  memcpy(memory,&main9_watch_separator2,get_dial_type_size(dial_type_text)); 
+	memory += get_dial_type_size(dial_type_text);
 }
-
-
- char *message = 
-"{                              \
-    \"name\":\"mculover666\",   \
-    \"age\": 22,                \
-    \"weight\": 55.5,           \
-    \"address\":                \
-        {                       \
-            \"country\": \"China\",\
-            \"zip-code\": 111111\
-        },                      \
-    \"skill\": [\"c\", \"Java\", \"Python\"],\
-    \"student\": false          \
-}";
-
-
 
 int main()
 {
-  printf("Version: %s\n", cJSON_Version());
-  cJSON* cjson_test = NULL;
-  cJSON* cjson_name = NULL;
-  cJSON* cjson_age = NULL;
-  cJSON* cjson_weight = NULL;
-  cJSON* cjson_address = NULL;
-  cJSON* cjson_address_country = NULL;
-  cJSON* cjson_address_zipcode = NULL;
-  cJSON* cjson_skill = NULL;
-  cJSON* cjson_student = NULL;
-  int    skill_array_size = 0, i = 0;
-  cJSON* cjson_skill_item = NULL;
+  printf("Version: %s\n", cJSON_Version()); 
+  uint8_t obj_num = 0;
+	uint8_t* memory = dial_data; 
 
-  /* 解析整段JSO数据 */
-  cjson_test = cJSON_Parse(message);
-  if(cjson_test == NULL)
-  {
-      printf("parse fail.\n");
-      return -1;
-  }
 
-  /* 依次根据名称提取JSON数据（键值对） */
-  cjson_name = cJSON_GetObjectItem(cjson_test, "name");
-  cjson_age = cJSON_GetObjectItem(cjson_test, "age");
-  cjson_weight = cJSON_GetObjectItem(cjson_test, "weight");
 
-  printf("name: %s\n", cjson_name->valuestring);
-  printf("age:%d\n", cjson_age->valueint);
-  printf("weight:%.1f\n", cjson_weight->valuedouble);
-
-  /* 解析嵌套json数据 */
-  cjson_address = cJSON_GetObjectItem(cjson_test, "address");
-  cjson_address_country = cJSON_GetObjectItem(cjson_address, "country");
-  cjson_address_zipcode = cJSON_GetObjectItem(cjson_address, "zip-code");
-  printf("address-country:%s\naddress-zipcode:%d\n", cjson_address_country->valuestring, cjson_address_zipcode->valueint);
-
-  /* 解析数组 */
-  cjson_skill = cJSON_GetObjectItem(cjson_test, "skill");
-  skill_array_size = cJSON_GetArraySize(cjson_skill);
-  printf("skill:[");
-  for(i = 0; i < skill_array_size; i++)
-  {
-      cjson_skill_item = cJSON_GetArrayItem(cjson_skill, i);
-      printf("%s,", cjson_skill_item->valuestring);
-  }
-  printf("\b]\n");
-
-  /* 解析布尔型数据 */
-  cjson_student = cJSON_GetObjectItem(cjson_test, "student");
-  if(cjson_student->valueint == 0)
-  {
-      printf("student: false\n");
-  }
-  else
-  {
-      printf("student:error\n");
-  }
-
+  int    skill_array_size = 0, i = 0,j; 
   char read_json[65535] = {0};
   char *ch;
   ch = read_json;
   FILE *re = NULL; 
-  re = fopen("dial_image_example.txt","r");
+  re = fopen("dial_task.json","r");
   *ch=fgetc(re);
   int num = 0;
-  while( *ch != '}'){
+  while( *ch != EOF){
       ch++;
       *ch=fgetc(re); 
       num++;
   }
-  printf("\nnum = %d\n",num);
-  printf("%s\n\n",read_json);
+  // printf("\nnum = %d\n",num);
+  // printf("%s\n\n",read_json);
   fclose(re);
 
 
   cJSON* cjson_mytest = NULL;
-  cJSON* cjson_names = NULL;
-  cJSON* cjson_num = NULL; 
-  cJSON* cjson_sites = NULL; 
-  cJSON* cjson_sites_item = NULL; 
 
 
   cjson_mytest = cJSON_Parse(read_json);
   if(cjson_mytest == NULL)
   {
       printf("parse fail.\n"); 
+      return 0;
   }
-  cjson_names = cJSON_GetObjectItem(cjson_mytest, "name");
-  cjson_num = cJSON_GetObjectItem(cjson_mytest, "num");
-  cjson_sites = cJSON_GetObjectItem(cjson_mytest, "sites");
-  skill_array_size = cJSON_GetArraySize(cjson_sites);
-  for(i = 0; i < skill_array_size; i++)
-  {
-      cjson_sites_item = cJSON_GetArrayItem(cjson_sites, i);
-      printf("%s ,", cjson_sites_item->valuestring);
+  printf("cJSON_GetArraySize = %d\n",cJSON_GetArraySize(cjson_mytest));
+  for(j = 0;j<cJSON_GetArraySize(cjson_mytest);j++)
+  { 
+    cJSON* obj = cJSON_GetArrayItem(cjson_mytest,j); 
+    printf("obj[%d] = %s\n",j,obj->string); 
+    cJSON* read_type = cJSON_GetObjectItem(obj,"type");
+    if (read_type->valueint == dial_type_image)
+    {
+      cJSON* json_type     = cJSON_GetObjectItem(obj,"type");     if(json_type == NULL) {printf("format err\n");return 0;}
+      cJSON* json_x        = cJSON_GetObjectItem(obj,"x");        if(json_x == NULL) {printf("format err\n");return 0;}
+      cJSON* json_y        = cJSON_GetObjectItem(obj,"y");        if(json_y == NULL) {printf("format err\n");return 0;}
+      cJSON* json_img_addr = cJSON_GetObjectItem(obj,"img_addr"); if(json_img_addr == NULL) {printf("format err\n");return 0;}
+      custom_dial_image dat;
+      dat.type     = json_type->valueint;
+      dat.x        = json_x->valueint;
+      dat.y        = json_y->valueint;
+      dat.img_addr = json_img_addr->valueint;
+      printf("%d %d %d %d \n",dat.type,dat.x,dat.y,dat.img_addr);
+      obj_type[obj_num++] = dat.type;
+      memcpy(memory,&dat,get_dial_type_size(dial_type_image)); 
+      memory += get_dial_type_size(dial_type_image); 
+    }
+    else if(read_type->valueint == dial_type_pointer)
+    {
+      cJSON* json_type               = cJSON_GetObjectItem(obj,"type");               if(json_type == NULL) {printf("format err\n");return 0;}
+      cJSON* json_data_type          = cJSON_GetObjectItem(obj,"data_type");          if(json_data_type == NULL) {printf("format err\n");return 0;}
+      cJSON* json_x                  = cJSON_GetObjectItem(obj,"x");                  if(json_x == NULL) {printf("format err\n");return 0;}
+      cJSON* json_y                  = cJSON_GetObjectItem(obj,"y");                  if(json_y == NULL) {printf("format err\n");return 0;}
+      cJSON* json_img_addr           = cJSON_GetObjectItem(obj,"img_addr");           if(json_img_addr == NULL) {printf("format err\n");return 0;}
+      cJSON* json_img_heigth         = cJSON_GetObjectItem(obj,"img_heigth");         if(json_img_heigth == NULL) {printf("format err\n");return 0;}
+      cJSON* json_img_width          = cJSON_GetObjectItem(obj,"img_width");          if(json_img_width == NULL) {printf("format err\n");return 0;}
+      cJSON* json_start_arc          = cJSON_GetObjectItem(obj,"start_arc");          if(json_start_arc == NULL) {printf("format err\n");return 0;}
+      cJSON* json_end_arc            = cJSON_GetObjectItem(obj,"end_arc");            if(json_end_arc == NULL) {printf("format err\n");return 0;}
+      cJSON* json_rotation_center_x  = cJSON_GetObjectItem(obj,"rotation_center_x");  if(json_rotation_center_x == NULL) {printf("format err\n");return 0;}
+      cJSON* json_rotation_center_y  = cJSON_GetObjectItem(obj,"rotation_center_y");  if(json_rotation_center_y == NULL) {printf("format err\n");return 0;}
+      custom_dial_pointer dat;
+      dat.type              =  json_type->valueint;
+      dat.data_type         =  json_data_type->valueint;
+      dat.x                 =  json_x->valueint;
+      dat.y                 =  json_y->valueint;
+      dat.img_addr          =  json_img_addr->valueint;
+      dat.img_heigth        =  json_img_heigth->valueint;
+      dat.img_width         =  json_img_width->valueint;
+      dat.start_arc         =  json_start_arc->valueint;
+      dat.end_arc           =  json_end_arc->valueint;
+      dat.rotation_center_x =  json_rotation_center_x->valueint;
+      dat.rotation_center_y =  json_rotation_center_y->valueint;
+      printf("%d %d %d %d %d %d %d %d %d %d %d \n",dat.type,dat.data_type,dat.x,dat.y,dat.img_addr,dat.img_heigth,dat.img_width,dat.start_arc,dat.end_arc,dat.rotation_center_x,dat.rotation_center_y);
+
+      obj_type[obj_num++] = dat.type;
+      memcpy(memory,&dat,get_dial_type_size(dial_type_pointer)); 
+      memory += get_dial_type_size(dial_type_pointer); 
+    }
+    else if(read_type->valueint == dial_type_text)
+    {
+      cJSON* cjson_type           =  cJSON_GetObjectItem(obj,"type");        if(cjson_type == NULL) {printf("format err\n");return 0;}                      
+      cJSON* cjson_data_type      =  cJSON_GetObjectItem(obj,"data_type");   if(cjson_data_type == NULL) {printf("format err\n");return 0;}                  
+      cJSON* cjson_x              =  cJSON_GetObjectItem(obj,"x");           if(cjson_x == NULL) {printf("format err\n");return 0;}          
+      cJSON* cjson_y              =  cJSON_GetObjectItem(obj,"y");           if(cjson_y == NULL) {printf("format err\n");return 0;}          
+      cJSON* cjson_text_width     =  cJSON_GetObjectItem(obj,"text_width");  if(cjson_text_width == NULL) {printf("format err\n");return 0;}                  
+      cJSON* cjson_text_rgb       =  cJSON_GetObjectItem(obj,"text_rgb");    if(cjson_text_rgb == NULL) {printf("format err\n");return 0;}                
+      cJSON* cjson_text_align     =  cJSON_GetObjectItem(obj,"text_align");  if(cjson_text_align == NULL) {printf("format err\n");return 0;}                  
+      cJSON* cjson_text_size      =  cJSON_GetObjectItem(obj,"text_size");   if(cjson_text_size == NULL) {printf("format err\n");return 0;}                  
+      cJSON* cjson_text_custom    =  cJSON_GetObjectItem(obj,"text_custom"); if(cjson_text_custom == NULL) {printf("format err\n");return 0;}                    
+
+      custom_dial_text dat;
+      dat.type            =              cjson_type->valueint;                   
+      dat.data_type       =   cjson_data_type->valueint;                          
+      dat.x               =   cjson_x->valueint;                                  
+      dat.y               =    cjson_y->valueint;                                
+      dat.text_width      =    cjson_text_width->valueint;                       
+      if(cJSON_GetArraySize(cjson_text_rgb) == 3){
+        cJSON* r =cJSON_GetArrayItem(cjson_text_rgb,0);
+        cJSON* g =cJSON_GetArrayItem(cjson_text_rgb,1);
+        cJSON* b =cJSON_GetArrayItem(cjson_text_rgb,2);
+        dat.text_rgb[0] = r->valueint;
+        dat.text_rgb[1] = g->valueint;
+        dat.text_rgb[2] = b->valueint;
+      }
+      dat.text_align     =    cjson_text_align->valueint;                       
+      dat.text_size      =    cjson_text_size->valueint;
+      if(strlen(cjson_text_custom->valuestring) >=20){
+        for(i = 0;i<19;i++)
+          dat.text_custom[i] = cjson_text_custom->valuestring[i];
+        dat.text_custom[19] = '\0';
+      }
+      else
+      {
+        for(i = 0;i<strlen(cjson_text_custom->valuestring);i++)
+          dat.text_custom[i] = cjson_text_custom->valuestring[i];
+      }
+       
+      printf("%d %d %d %d %d %d %d %d %d %d %s\r\n",dat.type,dat.data_type,dat.x,dat.y,dat.text_width,dat.text_rgb[0],dat.text_rgb[1],dat.text_rgb[2],dat.text_align,dat.text_size,dat.text_custom );
+      obj_type[obj_num++] = dat.type;
+      memcpy(memory,&dat,get_dial_type_size(dial_type_text)); 
+      memory += get_dial_type_size(dial_type_text);
+    }
+    else if(read_type->valueint == dial_type_more_img)
+    {
+      cJSON* cjson_type           =  cJSON_GetObjectItem(obj,"type");
+      cJSON* cjson_data_type      =  cJSON_GetObjectItem(obj,"data_type");
+      cJSON* cjson_x              =  cJSON_GetObjectItem(obj,"x");
+      cJSON* cjson_y              =  cJSON_GetObjectItem(obj,"y");
+      cJSON* cjson_img_addr       =  cJSON_GetObjectItem(obj,"img_addr");
+      custom_dial_more_img dat;
+      dat.type      = cjson_type->valueint;
+      dat.data_type = cjson_data_type->valueint;
+      dat.x         = cjson_x->valueint;
+      dat.y         = cjson_y->valueint;
+      for(i = 0;i<cJSON_GetArraySize(cjson_img_addr);i++)
+      {
+        cJSON* r =cJSON_GetArrayItem(cjson_img_addr,i);
+        dat.img_addr[i] = r->valueint;
+      }
+      printf("%d %d %d %d ",dat.type,dat.data_type ,dat.x,dat.y);
+      for(i = 0;i<cJSON_GetArraySize(cjson_img_addr);i++)
+        printf("%d ",dat.img_addr[i]);
+      printf("\n");
+
+      obj_type[obj_num++] = dat.type;
+      memcpy(memory,&dat,get_dial_type_size(dial_type_more_img)); 
+      memory += get_dial_type_size(dial_type_more_img);
+    }
   }
 
 
-  printf("\nname = %s\n",cjson_names->valuestring);
-  printf("num  = %d\n",cjson_num->valueint); 
-    
+
 
 
 
@@ -429,7 +365,7 @@ int main()
   uint8_t head_bin4[4] = { 0x00,0x00,0xa0,0x06};
 
 
-  main10_data_init();
+  // main9_data_init();
   printf("\nhello world\n");
 
   FILE *fp = NULL; 
@@ -449,10 +385,10 @@ int main()
   // fwrite(&dial_data,sizeof(dial_data),1,fp);  
   // fclose(fp);
   
-  fp = fopen("all.bin", "w+");
+  fp = fopen("001001_U0.3.bin", "w+");
   fwrite(&head_bin4,sizeof(head_bin4),1,fp);  
   fwrite(&crc8,sizeof(crc8),1,fp);  
-  fwrite(&obj,sizeof(obj),1,fp);  
+  fwrite(&obj_type,sizeof(obj_type),1,fp);  
   fwrite(&dial_data,sizeof(dial_data),1,fp);  
   fclose(fp);
 
